@@ -6,27 +6,27 @@
 (function() {
     "use strict";
     
-    var AJAX = this.Observable.extend(function(options) {
-        AJAX.superclass.constructor.call(this);
+    var Ajax = this.Observable.extend(function(options) {
+        Ajax.superclass.constructor.call(this);
         
-        this.xhr = null;
-        
-        var     url = options.url, 
+        this.xhr = new XMLHttpRequest;
+    });
+    
+    Ajax.setHeader = function(name, value) {
+        this.xhr.setRequestHeader(name, value);
+    };
+    
+    Ajax.request = function(options) {
+        var     xhr = this.xhr,
+                url = options.url, 
                 self = this;
         
-        var xhr = new XMLHttpRequest;
-        
         xhr.open(options.type, url, true);
-        
-        xhr.setRequestHeader("Accept","application/json, text/javascript, */*; q=0.01");
-        xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
         
         xhr.send((options.data) ? this.encode(options.data) : undefined);
         
         if (options.timeout)
             xhr.timeout = options.timeout;
-        
-        this.xhr = xhr;
         
         this.trigger('before', [xhr]);
         
@@ -53,9 +53,15 @@
                 };
         
         return this;
-    });
+    };
     
-    AJAX.prototype.encode = function(data) {
+    Ajax.prototype.abort = function() {
+        this.xhr.abort();
+        
+        return this;
+    };
+    
+    Ajax.prototype.encode = function(data) {
         return Object.keys(data).map(function(k) { 
             return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
         }).join('&');
