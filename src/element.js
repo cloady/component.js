@@ -1,5 +1,5 @@
 (function() {
-    var Element = function(el) {
+    var Element = this.Class.extend(function(el) {
         if (typeof(el) === 'string') el = document.querySelector(el);
         this.el = el;
     };
