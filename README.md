@@ -1,0 +1,4 @@
+abstractjs
+==========
+
+Abstract Javascript Framework
