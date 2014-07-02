@@ -11,23 +11,32 @@
         return Class.extend(constructor);
     };
 
-    Class.extend = function(c) {
-        var Class = function() {};
-        Class.prototype = this.prototype;
+    Class.extend = function() {
+        if (arguments.length < 2)
+           var c = arguments[0], p = this;
+        else
+           var c = arguments[1], p = arguments[0];
         
-        Class.prototype = new Class();
-        c.prototype.constructor = c;
+        if (typeof p === 'function')
+        {
+            var Class = function() {};
+            Class.prototype = p.prototype;
+
+            Class.prototype = new Class();
+            c.prototype.constructor = c;
+        }
         
-        for(var k in this)
-            c[k] = this[k];
+        for(var k in p)
+            c[k] = p[k];
         
-        c.superclass = this.prototype;
+        if (typeof(c) === 'function')
+            c.superclass = p.prototype;
         
         return c;
     };
     
     Class.extends = function(c) {
-        return c.extend(this);
+        return Class.extend(this, c);
     };
     
     Class.mixin = function() {
