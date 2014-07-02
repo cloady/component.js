@@ -12,16 +12,34 @@
     };
 
     Class.extend = function(c) {
-        var i = function() {};
-        i.prototype = this.prototype;
-
-        c.prototype = new i();
+        var Class = function() {};
+        Class.prototype = this.prototype;
+        
+        Class.prototype = new Class();
         c.prototype.constructor = c;
-            
+        
+        for(var k in this)
+            c[k] = this[k];
+        
         c.superclass = this.prototype;
-        c.extend = this.extend;
         
         return c;
+    };
+    
+    Class.extends = function(c) {
+        return c.extend(this);
+    };
+    
+    Class.mixin = function() {
+        for(var i=0; i<arguments.length; i++)
+        {
+            for (var k in arguments[i])
+                if (arguments[i].hasOwnProperty(k))
+                    this[k] = arguments[i][k];
+            arguments[i].call(this.prototype);
+        }
+        
+        return this;
     };
     
     this.Class = Class;
