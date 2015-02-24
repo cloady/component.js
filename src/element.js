@@ -1,6 +1,7 @@
 (function() {
 	this.Container = (function() {
 		  function Container(config) {
+		  	((!config) && (config = {}));
 		  	this._children = (config.children) ? config.children : [];
 		  	this._el = (config.el) ? config.el : null;
 		  }
