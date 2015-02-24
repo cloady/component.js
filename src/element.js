@@ -1,5 +1,4 @@
 (function() {
-
 	this.Container = (function() {
 		  function Container(config) {
 		  	this._children = (config.children) ? config.children : [];
@@ -44,5 +43,4 @@
 
 		  return Container;
 	})();
-
 }).call(window);
