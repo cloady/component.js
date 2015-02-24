@@ -8,7 +8,7 @@
 
 		  Container.prototype.indexOf = function(e) {
 		  	for(var key in this._children)
-		  		(this._children[key] === e) && (return key);
+		  		if (this._children[key] === e) return key;
 		  };
 
 		  Container.prototype.getAt = function(index) {
