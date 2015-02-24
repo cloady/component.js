@@ -1,4 +1,4 @@
-abstractjs
+container.js
 ==========
 
-Abstract Javascript Framework
+Abstract Container
