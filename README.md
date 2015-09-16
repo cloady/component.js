@@ -27,7 +27,7 @@ Examples
       data: [ { html: 'Item One' }, { html: 'Item Two' } ],
       children: 'li.item',
       append: function(data) {
-        return $('<li />').html(data.html);
+        return $('<li />').addClass('item').html(data.html);
       }
   });
 ```
