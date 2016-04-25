@@ -1,54 +1,72 @@
-container.jquery.js
+component.js
 ==========
 
-Abstract Container class.
+Component.js framework wrapper
+Easily create namespaces, classes and components.
 
 Examples
 ==========
 
-* Create container, select item#0.
+* Create common component and extend one
 
-```
-  $('#myList').container({ children: 'li' }).select(0);
-```
+component('menubar', function() {
+  return {
+    childs: [],
+    childEl: '<li></li>',
+    parentEl: '#myDiv',
+    el: '<ul></ul>',
+    add: function(child) {
+      this.childs.push(child);
+    },
+    render: function() {
+      var childs=[];
+      this.childs.map(function(v) {
+        childs.push( $(this.el).text(this.childs[v]) );
+      });
+      $(this.parentEl).append($(this.el).html(childs.join('')));
+    }
+  };
+});
 
-* Create container with buttons, drop disabled state when active.
-
-```
-  $('#myList').container({ children: 'button', activeCls: null }).on('select', function() {
-      this.disabled=false;
-  }).select(0);
-```
-
-* Render data array as childrens
-
-```
-  $('#myList').container({
-      data: [ { html: 'Item One' }, { html: 'Item Two' } ],
-      children: 'li.item',
-      append: function(data) {
-        return $('<li />').addClass('item').html(data.html);
-      }
+component('menubarDiv', function() {
+  return $.extend(component('menubar'), {
+    childEl: '<div />',
+    parentEl: '<div />'
   });
-```
+});
 
-* Utils
+component('menubarDiv').render();
 
-```
-  $('#myList').container({ children: 'li'  }).filter(':even').css('background', 'gray');
-  
-  var myList = $('#myList').container({ children: 'li'  });
-  myList.select(myList.index('#foo')).css('background', 'black');
-  
-  myList.children().map(function(v) {
-      console.log($(this).html());
-  });
-  
-  myList.append({ html: 'Item Three' });
-  
-  myList.remove();
-  
-  myList.render([ {html: 'Item New'} ]);
-  
-  myList.on('select', function() { console.log(this.data); });
-```
+* Create subclass components
+
+scene = function(id, fn) {
+  return component('scene.'+id, fn);
+};
+
+scene('auth', function() {
+  return {
+  };
+});
+
+* Create class using component.js
+
+cls = function(id, fn) {
+  return component('class.'+id, fn);
+}
+
+cls('Animal', function() {
+  return function() {
+    this.canWalk = function() { return console.log('Walk'); };
+  };
+});
+
+cls('Cat', function() {
+  return function() {
+    this.canMeow = function() { return console.log('Meow'); };
+    return $.extend(this, cls('Animal'));
+  };
+});
+
+var cat = new cls('Cat');
+cat.canMeow();
+cat.canWalk();
