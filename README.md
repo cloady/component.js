@@ -67,6 +67,6 @@ cls('Cat', function() {
   };
 });
 
-var cat = new cls('Cat');
+var cat = new (cls('Cat'));
 cat.canMeow();
 cat.canWalk();
