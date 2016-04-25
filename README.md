@@ -62,8 +62,9 @@ cls('Animal', function() {
 
 cls('Cat', function() {
   return function() {
-    this.canMeow = function() { return console.log('Meow'); };
-    return $.extend(this, cls('Animal'));
+    var parent = cls('Animal');
+    this.canMeow = function() { parent.canWalk(); return console.log('Meow'); };
+    return $.extend(this, parent);
   };
 });
 
